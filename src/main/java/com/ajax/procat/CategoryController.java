@@ -105,21 +105,9 @@ public class CategoryController {
         Transaction tx = session.beginTransaction();
         ModelAndView mv = new ModelAndView();
         mv.setViewName("categoryproduct");
-        if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
-            tx.commit();
-        }
-        SQLQuery q1 = session.createSQLQuery("select category_id,product_id from category_product");
+        SQLQuery q1 = session.createSQLQuery("SELECT category.Categories , product.name FROM category,product CROSS JOIN category_product WHERE category_product.Category_Id = category.Id AND category_product.product_Id = product.Id;");
         List<Object[]> catprod1 = (ArrayList<Object[]>) q1.list();
-        for (Object[] s : catprod1) {
-            Query q = session.createQuery("select c.cat,p.pname from Category c,Product p where c.id=:cid AND p.id=:pid");
-            q.setParameter("cid", s[0]);
-            q.setParameter("pid", s[1]);
-            List<Object[]> catprod = (ArrayList<Object[]>) q.list();
-            for (Object[] s1 : catprod) {
-                mv.addObject("catprod", catprod);
-                System.out.println(s1[0] + ":::" + s1[1]);
-            }
-        }
+        mv.addObject("catprod", catprod1);
         if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
             tx.commit();
         }
