@@ -106,8 +106,8 @@ public class CategoryController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("categoryproduct");
         SQLQuery q1 = session.createSQLQuery("SELECT category.Categories , product.name FROM category,product CROSS JOIN category_product WHERE category_product.Category_Id = category.Id AND category_product.product_Id = product.Id;");
-        List<Object[]> catprod1 = (ArrayList<Object[]>) q1.list();
-        mv.addObject("catprod", catprod1);
+        List<Object[]> catprod = (ArrayList<Object[]>) q1.list();
+        mv.addObject("catprod", catprod);
         if (tx.getStatus().equals(TransactionStatus.ACTIVE)) {
             tx.commit();
         }
